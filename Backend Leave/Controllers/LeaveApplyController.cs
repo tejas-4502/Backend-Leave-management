@@ -90,5 +90,25 @@ namespace Backend_Leave.Controllers
 
             return Ok();
         }
+
+        [HttpGet("ByUserName")]
+        public async Task<ActionResult<IEnumerable<LeaveApply>>> GetLeaveApplicationsByUserName([FromQuery] string userName)
+        {
+            if (string.IsNullOrEmpty(userName))
+            {
+                return BadRequest("Username cannot be empty");
+            }
+
+            var leaveApplications = await _employeeContext.LeaveApplys
+                .Where(leave => leave.UserName == userName)
+                .ToListAsync();
+
+            if (leaveApplications == null || !leaveApplications.Any())
+            {
+                return NotFound("No leave applications found for the given username");
+            }
+
+            return Ok(leaveApplications);
+        }
     }
 }
