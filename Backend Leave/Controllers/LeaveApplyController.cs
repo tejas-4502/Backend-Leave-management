@@ -110,5 +110,55 @@ namespace Backend_Leave.Controllers
 
             return Ok(leaveApplications);
         }
+
+        [HttpPut("{id}/Accept")]
+        public async Task<ActionResult<LeaveApply>> AcceptLeave(int id)
+        {
+            var leave = await _employeeContext.LeaveApplys.FindAsync(id);
+
+            if (leave == null)
+            {
+                return NotFound();
+            }
+
+            leave.Status = "Accepted"; // Update status to 'Accepted' (or your desired status for acceptance)
+
+            try
+            {
+                await _employeeContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return Ok();
+        }
+
+        [HttpPut("{id}/Decline")]
+        public async Task<ActionResult<LeaveApply>> DeclineLeave(int id)
+        {
+            var leave = await _employeeContext.LeaveApplys.FindAsync(id);
+
+            if (leave == null)
+            {
+                return NotFound();
+            }
+
+            leave.Status = "Declined"; // Update status to 'Declined' (or your desired status for rejection)
+
+            try
+            {
+                await _employeeContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+            return Ok();
+        }
+
+
     }
 }

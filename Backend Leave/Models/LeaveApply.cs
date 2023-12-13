@@ -8,5 +8,6 @@
         public string Startdate { get; set; }
         public string Enddate { get; set; }
         public string? Comments { get; set; }
+        public string Status { get; set; }
     }
 }
